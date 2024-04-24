@@ -1,41 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Overview
 
-## Getting Started
+This project aims to create an application that presents a 3-week treatment program visually on a calendar interface. The treatment program data is provided in a JSON format and the desired output adheres to a specific design.
 
-First, run the development server:
+## Input Format
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The input for the 3-week treatment program is structured as follows:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+jsonCopy code
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`{
+  "week<number>": [{
+    "weekday": "MONDAY" || "TUESDAY" || "WEDNESDAY" || "THURSDAY" || "FRIDAY" || "SATURDAY" || "SUNDAY",
+    "title": "Title for the daily activity",
+    "completed": true || false
+  }, ...]
+}`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Each week contains multiple activities, each described by the day of the week, a title, and a completion status.
 
-## Learn More
+## Output Design
 
-To learn more about Next.js, take a look at the following resources:
+Currently, design loooks like this
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![](examples/record.gif)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The treatment program is visualized on a calendar with the following features:
 
-## Deploy on Vercel
+- Current month is displayed, with the current day highlighted.
+- The program starts on the first full week of the month and spans three weeks.
+- Daily activities are displayed under the respective day number.
+- Day numbers have different colors based on activity presence.
+- Incomplete activities from past days are moved to the current day.
+- Only one activity is displayed per day.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The output design matches the provided picture and adheres to specific color and text style specifications.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Technology
 
-### References
+The project utilizes React framework for implementation. Other tools and 3rd party libraries are allowed based on individual preference.
 
-https://github.com/ProNextJS/state-management-tutorial/
-https://ui.shadcn.com/
+## Project Structure
+
+- NextJS with React: Utilized NextJS for pre-fetching events and React for frontend development.
+- UI Components: Tailwind and Shadcn UI were used for UI design, with day/night themes implemented using Tailwind and toggle UI.
+- Calendar Implementation: I initially was intending to use https://www.npmjs.com/package/@fullcalendar/react to do calendar implementation, however, after comparing it to other calendar solutions react-big-calendar as the best way to implememt it.
+- Incomplete Events Handling: In the description, it says that "if a user has not completed an activity in the past, the activity will be moved to the current day" - which is what I kept. Since there can be only one activity per day,if there are multiple incomplete activities in the past, the first incomplete activity will be displayed today, however from that point I did change the logic: the following activities are not happening in a row, but rather on consecutive correct days of the week
+- Testing: Originally planned to use Jest for testing, however, pivoted to vitest due to time constraints and additional optimization efforts.
+
+## TODO
+
+One potential improvement to the project would be proper tailwind setup: currently, we have to use tailwind CDN to make sure all modules are imported correctly
